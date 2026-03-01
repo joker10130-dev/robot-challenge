@@ -14,6 +14,7 @@ A console-based simulation of a toy robot moving on a 5x5 square table.
 * **Boundary Checking**: The robot is prevented from falling off the table.
 * **Invalid Command Handling**: Commands are ignored until a valid PLACE command is executed.
 * **Case Insensitivity**: Commands and directions are case-insensitive (e.g., `place`, `Place`, `NORTH`, `north` are all valid).
+* **Space Handling**: The application ignores extra spaces in commands, ensuring that commands like `  PLACE   0,0,NORTH  ` are processed correctly.
 * **Multiple Command Handling**: The application can process multiple commands in sequence, allowing for complex movements and rotations.
 
 ## Setup and Run
