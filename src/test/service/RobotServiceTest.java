@@ -8,11 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RobotServiceTest {
-
     private Robot robot;
     private Table table;
     private RobotService robotService;
@@ -54,8 +52,14 @@ class RobotServiceTest {
     @Test
     @DisplayName("Test 4: move and turn before PLACE command")
     void testIgnoreCommandsBeforePlace() {
-        robotService.moveForward();
-        robotService.turnLeft();
+        assertThrows(IllegalStateException.class, () -> {
+            robotService.moveForward();
+        });
+
+        assertThrows(IllegalStateException.class, () -> {
+            robotService.turnLeft();
+        });
+
         assertNull(robotService.report());
     }
 
@@ -63,7 +67,11 @@ class RobotServiceTest {
     @DisplayName("Test 5: out of bounds move prevention (North)")
     void testPreventFallingNorth() {
         robotService.place(0, 4, Direction.NORTH);
-        robotService.moveForward();
+
+        assertThrows(IllegalStateException.class, () -> {
+            robotService.moveForward();
+        });
+
         assertEquals("0,4,NORTH", robotService.report());
     }
 
@@ -71,16 +79,26 @@ class RobotServiceTest {
     @DisplayName("Test 6: out of bounds move prevention (East)")
     void testPreventFallingEast() {
         robotService.place(4, 0, Direction.EAST);
-        robotService.moveForward();
+
+        assertThrows(IllegalStateException.class, () -> {
+            robotService.moveForward();
+        });
+
         assertEquals("4,0,EAST", robotService.report());
     }
 
     @Test
     @DisplayName("Test 7: place command with out of bounds coordinates")
     void testPlaceOutOfBounds() {
-        robotService.place(5, 5, Direction.NORTH);
-        assertNull(robotService.report());
-        robotService.place(-1, 0, Direction.NORTH);
+        // คาดหวังว่าต้องโยน Exception เมื่อวางนอกขอบเขต
+        assertThrows(IllegalArgumentException.class, () -> {
+            robotService.place(5, 5, Direction.NORTH);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            robotService.place(-1, 0, Direction.NORTH);
+        });
+
         assertNull(robotService.report());
     }
 }

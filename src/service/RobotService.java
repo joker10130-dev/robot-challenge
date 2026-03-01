@@ -19,12 +19,12 @@ public class RobotService {
             robot.setDirection(direction);
             robot.setPlaced(true);
         } else {
-            System.err.println("ERROR: Placement out of bounds.");
+            throw new IllegalArgumentException("Placement out of bounds (" + x + "," + y + ").");
         }
     }
 
     public void moveForward() {
-        if (!checkPlaced()) return;
+        validatePlaced();
 
         int nextX = robot.getX();
         int nextY = robot.getY();
@@ -40,42 +40,29 @@ public class RobotService {
             robot.setX(nextX);
             robot.setY(nextY);
         } else {
-            System.err.println("ERROR: Move ignored. Robot would fall at (" + nextX + "," + nextY + ").");
-        }
+            throw new IllegalStateException("Move ignored. Robot would fall at (" + nextX + "," + nextY + ").");        }
     }
 
     public void turnLeft() {
-        if (!checkPlaced()) return;
-        Direction currentDir = robot.getDirection();
-        switch (currentDir) {
-            case NORTH -> robot.setDirection(Direction.WEST);
-            case EAST -> robot.setDirection(Direction.NORTH);
-            case SOUTH -> robot.setDirection(Direction.EAST);
-            case WEST -> robot.setDirection(Direction.SOUTH);
-        }
+        validatePlaced();
+        robot.setDirection(robot.getDirection().rotateLeft());
     }
 
     public void turnRight() {
-        if (!checkPlaced()) return;
-        Direction currentDir = robot.getDirection();
-        switch (currentDir) {
-            case NORTH -> robot.setDirection(Direction.EAST);
-            case EAST -> robot.setDirection(Direction.SOUTH);
-            case SOUTH -> robot.setDirection(Direction.WEST);
-            case WEST -> robot.setDirection(Direction.NORTH);
-        }
+        validatePlaced();
+        robot.setDirection(robot.getDirection().rotateRight());
     }
 
     public String report() {
-        if (!checkPlaced()) return null;
+        if (robot.isNotPlaced()) {
+            return null;
+        }
         return robot.getX() + "," + robot.getY() + "," + robot.getDirection();
     }
 
-    private boolean checkPlaced() {
-        if (!robot.isPlaced()) {
-            System.err.println("ERROR: Command ignored. Robot is not on the table.");
-            return false;
+    private void validatePlaced() {
+        if (robot.isNotPlaced()) {
+            throw new IllegalStateException("Command ignored. Robot is not on the table.");
         }
-        return true;
     }
 }
