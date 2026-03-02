@@ -29,8 +29,10 @@ public class Main {
                 } else {
                     handleAction(input, robotService);
                 }
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                System.err.println("ERROR: " + e.getMessage());
             } catch (Exception e) {
-                System.err.println("Invalid command format.");
+                System.err.println("Invalid command format or unexpected error.");
             }
         }
         System.out.println("Simulator terminated.");
@@ -40,12 +42,18 @@ public class Main {
 //    Regex for PLACE to be x, y, direction format
         String[] parts = input.toUpperCase().replace("PLACE", "").trim().split("\\s*,\\s*");
         if (parts.length == 3) {
-            int x = Integer.parseInt(parts[0]);
-            int y = Integer.parseInt(parts[1]);
-            Direction dir = Direction.valueOf(parts[2].toUpperCase());
-            service.place(x, y, dir);
+            try {
+                int x = Integer.parseInt(parts[0]);
+                int y = Integer.parseInt(parts[1]);
+                Direction dir = Direction.valueOf(parts[2].toUpperCase());
+                service.place(x, y, dir);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Coordinates must be integers.");
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Invalid direction.");
+            }
         } else {
-            System.err.println("ERROR: PLACE requires X,Y,F parameters.");
+            throw new IllegalArgumentException("PLACE requires X,Y,F parameters.");
         }
     }
 
