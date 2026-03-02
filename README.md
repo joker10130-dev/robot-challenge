@@ -19,6 +19,30 @@ A console-based simulation of a toy robot moving on a 5x5 square table.
 
 ## Setup and Run
 
+Since this project does not use Build Tools like Maven or Gradle for dependency management (per the constraints), you must download and configure the JUnit Library manually via IntelliJ IDEA:
+
+### 1. Download JUnit JAR Files
+You need to download the following `.jar` files (version 5.10.2 is recommended):
+* `junit-jupiter-api-5.10.2.jar`
+* `junit-platform-commons-1.10.2.jar`
+* `junit-platform-engine-1.10.2.jar`
+
+Place all downloaded files into a **`lib/`** folder within the project root.
+
+### 2. Configure Project Structure in IntelliJ IDEA
+1.  Open the project in IntelliJ IDEA.
+2.  Go to **File** > **Project Structure...** (or press `Ctrl+Alt+Shift+S`).
+3.  Select **Modules** on the left panel.
+4.  Select the **Dependencies** tab.
+5.  Click the **+** button (on the right) > **JARs or Directories...**
+6.  Select the `lib` folder you created and click **OK**.
+7.  In the **Scope** column for the newly added JAR files, change the scope to **Test** to ensure these libraries are not used in the production code.
+8.  Click **Apply** and **OK**.
+
+### 3. Mark Root Directories
+1. Right-click the **`src/test`** folder.
+2. Select **Mark Directory as** > **Test Sources Root**.
+
 ### Compilation
 Navigate to the `src` folder in your terminal and compile the Java files:
 
@@ -68,7 +92,7 @@ RobotChallenge/
 │   ├── Service/
 │   │   └── RobotService.java # Business Logic (Movement, Rotation, Placement)
 │   └── test/
-│       └── Service/
+│       └── service/
 │           └── RobotServiceTest.java # Unit tests for RobotService
 └── README.md
 ```
