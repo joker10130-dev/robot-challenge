@@ -19,12 +19,12 @@ public class RobotService {
             robot.setDirection(direction);
             robot.setPlaced(true);
         } else {
-            System.err.println("ERROR: Placement out of bounds.");
+            throw new IllegalArgumentException("Placement out of bounds.");
         }
     }
 
     public void moveForward() {
-        if (!checkPlaced()) return;
+        checkPlaced();
 
         int nextX = robot.getX();
         int nextY = robot.getY();
@@ -40,12 +40,12 @@ public class RobotService {
             robot.setX(nextX);
             robot.setY(nextY);
         } else {
-            System.err.println("ERROR: Move ignored. Robot would fall at (" + nextX + "," + nextY + ").");
+            throw new IllegalStateException("Move ignored. Robot would fall at (" + nextX + "," + nextY + ").");
         }
     }
 
     public void turnLeft() {
-        if (!checkPlaced()) return;
+        checkPlaced();
         Direction currentDir = robot.getDirection();
         switch (currentDir) {
             case NORTH -> robot.setDirection(Direction.WEST);
@@ -56,7 +56,7 @@ public class RobotService {
     }
 
     public void turnRight() {
-        if (!checkPlaced()) return;
+        checkPlaced();
         Direction currentDir = robot.getDirection();
         switch (currentDir) {
             case NORTH -> robot.setDirection(Direction.EAST);
@@ -67,15 +67,13 @@ public class RobotService {
     }
 
     public String report() {
-        if (!checkPlaced()) return null;
+        if (!robot.isPlaced()) return null;
         return robot.getX() + "," + robot.getY() + "," + robot.getDirection();
     }
 
-    private boolean checkPlaced() {
+    private void checkPlaced() {
         if (!robot.isPlaced()) {
-            System.err.println("ERROR: Command ignored. Robot is not on the table.");
-            return false;
+            throw new IllegalStateException("Command ignored. Robot is not on the table.");
         }
-        return true;
     }
 }

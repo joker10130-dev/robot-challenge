@@ -8,8 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RobotServiceTest {
 
@@ -33,7 +32,7 @@ class RobotServiceTest {
     }
 
     @Test
-    @DisplayName("Test่ 2: LEFT from (0,0) facing NORTH")
+    @DisplayName("Test 2: LEFT from (0,0) facing NORTH")
     void testExampleB() {
         robotService.place(0, 0, Direction.NORTH);
         robotService.turnLeft();
@@ -52,35 +51,36 @@ class RobotServiceTest {
     }
 
     @Test
-    @DisplayName("Test 4: move and turn before PLACE command")
+    @DisplayName("Test 4: Move and turn before PLACE command")
     void testIgnoreCommandsBeforePlace() {
-        robotService.moveForward();
-        robotService.turnLeft();
+        assertThrows(IllegalStateException.class, () -> robotService.moveForward());
+        assertThrows(IllegalStateException.class, () -> robotService.turnLeft());
         assertNull(robotService.report());
     }
 
     @Test
-    @DisplayName("Test 5: out of bounds move prevention (North)")
+    @DisplayName("Test 5: Out of bounds move prevention (North)")
     void testPreventFallingNorth() {
         robotService.place(0, 4, Direction.NORTH);
-        robotService.moveForward();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> robotService.moveForward());
+        assertEquals("Move ignored. Robot would fall at (0,5).", exception.getMessage());
         assertEquals("0,4,NORTH", robotService.report());
     }
 
     @Test
-    @DisplayName("Test 6: out of bounds move prevention (East)")
+    @DisplayName("Test 6: Out of bounds move prevention (East)")
     void testPreventFallingEast() {
         robotService.place(4, 0, Direction.EAST);
-        robotService.moveForward();
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> robotService.moveForward());
+        assertEquals("Move ignored. Robot would fall at (5,0).", exception.getMessage());
         assertEquals("4,0,EAST", robotService.report());
     }
 
     @Test
-    @DisplayName("Test 7: place command with out of bounds coordinates")
+    @DisplayName("Test 7: Place command with out of bounds coordinates")
     void testPlaceOutOfBounds() {
-        robotService.place(5, 5, Direction.NORTH);
-        assertNull(robotService.report());
-        robotService.place(-1, 0, Direction.NORTH);
+        assertThrows(IllegalArgumentException.class, () -> robotService.place(5, 5, Direction.NORTH));
+        assertThrows(IllegalArgumentException.class, () -> robotService.place(-1, 0, Direction.NORTH));
         assertNull(robotService.report());
     }
 }
