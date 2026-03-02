@@ -48,7 +48,7 @@ Navigate to the `src` folder in your terminal and compile the Java files:
 
 ```bash
 cd src
-javac Model/*.java Service/*.java Main.java
+javac model/*.java service/*.java Main.java
 ```
 
 ### Running the Application
