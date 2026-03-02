@@ -77,7 +77,7 @@ This project includes unit tests for business logic validation using JUnit 5.
 
 ### Using IntelliJ IDEA
 1. Open the project in IntelliJ IDEA.
-2. Right-click on the test.Service folder.
+2. Right-click on the test.service folder.
 3. Select Run 'All Tests'.
 
 ## Project Structure
@@ -85,11 +85,11 @@ This project includes unit tests for business logic validation using JUnit 5.
 RobotChallenge/
 ├── src/
 │   ├── Main.java           # Handles input parsing and application flow
-│   ├── Model/
+│   ├── model/
 │   │   ├── Direction.java  # Enum for directions (NORTH, SOUTH, EAST, WEST)
 │   │   ├── Robot.java      # Robot state object
 │   │   └── Table.java      # Table boundaries and validation
-│   ├── Service/
+│   ├── service/
 │   │   └── RobotService.java # Business Logic (Movement, Rotation, Placement)
 │   └── test/
 │       └── service/
